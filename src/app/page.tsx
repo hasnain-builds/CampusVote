@@ -94,7 +94,7 @@ export default function Home() {
       </p>
 
       <h2 className="mt-1 text-2xl font-bold text-slate-900">
-        Hasnain <span className="text-blue-600">Sheikh</span>
+        Hasnain <span className="mt-1 text-2xl font-bold text-slate-900">Sheikh</span>
       </h2>
 
       <p className="mt-2 text-sm text-slate-500">
@@ -118,7 +118,7 @@ export default function Home() {
 
       {/* LinkedIn */}
       <a
-        href="https://linkedin.com/in/hasnain-builds"
+        href="https://linkedin.com/in/hasnainbuilds"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 rounded-xl bg-[#0A66C2] px-5 py-3 text-white font-medium shadow-md transition-all hover:scale-105"
@@ -129,7 +129,7 @@ export default function Home() {
 
       {/* Email */}
       <a
-        href="hassu3210@gmail.com"
+        href="mailto:hassu3210@gmail.com"
         className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-slate-700 font-medium shadow-sm transition-all hover:bg-slate-100 hover:scale-105"
       >
         <Mail size={18} />
