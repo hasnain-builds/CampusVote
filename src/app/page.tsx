@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Vote, ArrowRight, Activity } from "lucide-react";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { Mail } from "lucide-react";
 
 export default function Home() {
   return (
@@ -82,11 +84,69 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-100 bg-white/40 py-6 text-center">
-        <p className="text-xs font-medium text-slate-400">
-          Designed & Developed by <span className="text-slate-500 font-semibold hover:text-blue-600 transition-colors">Hasnain Sheikh</span>
-        </p>
-      </footer>
+      <footer className="relative z-10 border-t border-slate-200 bg-white/50 backdrop-blur-sm py-8">
+  <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
+
+    {/* Developer */}
+    <div className="text-center">
+      <p className="text-sm text-slate-500">
+        Designed & Developed by
+      </p>
+
+      <h2 className="mt-1 text-2xl font-bold text-slate-900">
+        Hasnain <span className="text-blue-600">Sheikh</span>
+      </h2>
+
+      <p className="mt-2 text-sm text-slate-500">
+        Connect with the Developer
+      </p>
+    </div>
+
+    {/* Social Links */}
+    <div className="flex flex-wrap items-center justify-center gap-4">
+
+      {/* Instagram */}
+      <a
+        href="https://instagram.com/hasnain.learn"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-5 py-3 text-white font-medium shadow-md transition-all hover:scale-105"
+      >
+        <FaInstagram className="text-lg" />
+        Instagram
+      </a>
+
+      {/* LinkedIn */}
+      <a
+        href="https://linkedin.com/in/hasnain-builds"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 rounded-xl bg-[#0A66C2] px-5 py-3 text-white font-medium shadow-md transition-all hover:scale-105"
+      >
+        <FaLinkedin className="text-lg" />
+        LinkedIn
+      </a>
+
+      {/* Email */}
+      <a
+        href="hassu3210@gmail.com"
+        className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-slate-700 font-medium shadow-sm transition-all hover:bg-slate-100 hover:scale-105"
+      >
+        <Mail size={18} />
+        Email
+      </a>
+
+    </div>
+
+    {/* Copyright */}
+    <div className="border-t border-slate-200 pt-5 w-full text-center">
+      <p className="text-sm text-slate-500">
+        © 2026 <span className="font-semibold text-slate-700">CampusVote</span>. All rights reserved.
+      </p>
+    </div>
+
+  </div>
+</footer>
     </div>
   );
 }
