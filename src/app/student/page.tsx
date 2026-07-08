@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Vote, Loader2, RotateCw } from "lucide-react";
+import { Vote, Loader2, RotateCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -135,14 +135,27 @@ function StudentHubContent() {
       {/* Header */}
       <header className="relative z-10 border-b border-slate-200/60 bg-white/70 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="bg-blue-600 text-white p-2 rounded-xl shadow-md shadow-blue-500/20">
-              <Vote className="h-5.5 w-5.5" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              Campus<span className="text-blue-600">Vote</span>
-            </span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push("/")}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 transition-all duration-200"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline text-sm font-medium">
+                Back
+              </span>
+            </button>
+
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="bg-blue-600 text-white p-2 rounded-xl shadow-md shadow-blue-500/20">
+                <Vote className="h-5.5 w-5.5" />
+              </div>
+
+              <span className="text-xl font-bold tracking-tight text-slate-900">
+                Campus<span className="text-blue-600">Vote</span>
+              </span>
+            </Link>
+          </div>
 
           <div className="flex items-center gap-2">
             {step === "LOBBY" && (
