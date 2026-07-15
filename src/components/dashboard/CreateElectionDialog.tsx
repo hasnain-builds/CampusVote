@@ -165,7 +165,7 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                   </Label>
                   <Input
                     id="batch"
-                    placeholder="eg., 334"
+                    placeholder="eg., Section-B"
                     value={batch}
                     onChange={(e) => setBatch(e.target.value)}
                     required
