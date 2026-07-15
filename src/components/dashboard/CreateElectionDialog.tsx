@@ -140,7 +140,7 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="grid grid-cols-1 gap-2 text-left">
+                <div className="grid grid-cols-1 gap-2 text-left min-w-0">
                   <Label htmlFor="electionType" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     Target Position
                   </Label>
@@ -149,8 +149,8 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                     onValueChange={(val) => setElectionType(val as ElectionType)}
                     disabled={isSubmitting}
                   >
-                    <SelectTrigger id="electionType" className="bg-white rounded-xl border-slate-200 min-h-[48px] text-base">
-                      <SelectValue placeholder="Select Position" />
+                    <SelectTrigger id="electionType" className="bg-white rounded-xl border-slate-200 min-h-[48px] text-base w-full">
+                      <SelectValue placeholder="Select Position" className="truncate" />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-slate-100 bg-white">
                       <SelectItem value="CR" className="rounded-lg">Class Representative</SelectItem>
@@ -159,11 +159,11 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-1 gap-2">
+                <div className="grid grid-cols-1 gap-2 min-w-0">
                   <Label htmlFor="batch" className="text-xs font-bold text-slate-400">
                     Eligible Batch
                   </Label>
-                  <Input
+                  <Input                        
                     id="batch"
                     placeholder="eg., Section-B"
                     value={batch}
@@ -184,8 +184,8 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                   onValueChange={(val) => setDurationMinutes(parseInt(val, 10))}
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger id="duration" className="bg-white rounded-xl border-slate-200 min-h-[48px] text-base">
-                    <SelectValue placeholder="Select Duration" />
+                  <SelectTrigger id="duration" className="bg-white rounded-xl border-slate-200 min-h-[48px] text-base w-full">
+                    <SelectValue placeholder="Select Duration" className="truncate" />
                   </SelectTrigger>
                   <SelectContent className="rounded-xl border-slate-100 bg-white">
                     <SelectItem value="2" className="rounded-lg">2 minutes</SelectItem>
