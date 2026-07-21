@@ -119,7 +119,7 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
 
   // ── Force Sync — full state refresh ──
   const handleForceSync = async () => {
-    const toastId = toast.loading("Syncing with database...");
+    const toastId = toast.loading("Syncing...");
     try {
       await refetch();
       setSyncTrigger((prev) => prev + 1);
@@ -134,7 +134,7 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
   const handleUpdateStatus = async (newStatus: ElectionStatus, reason?: string) => {
     if (!election) return;
 
-    const toastId = toast.loading("Transitioning state...");
+    const toastId = toast.loading("We are going to live now!");
     try {
       await ElectionService.updateElectionStatus(electionId, newStatus, reason);
       // Refetch to get the exact server-written timestamps (end_time, start_time, etc.)
