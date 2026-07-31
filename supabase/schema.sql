@@ -24,7 +24,6 @@ CREATE TABLE public.candidates (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     election_id UUID REFERENCES public.elections(id) ON DELETE CASCADE NOT NULL,
     name TEXT NOT NULL,
-    gender TEXT NOT NULL CHECK (gender IN ('Male', 'Female', 'Other')),
     photo_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );

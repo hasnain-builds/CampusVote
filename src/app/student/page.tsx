@@ -75,8 +75,7 @@ function StudentHubContent() {
 
   // Hook handles realtime updates and auto-routing to /election/[id]/vote when status transitions to LIVE
   const { participants, count, forceSync } = useWaitingRoom(
-    election?.id || "",
-    rollNumber
+    election?.id || ""
   );
 
   const handleJoinSuccess = (loadedElection: ElectionWithCandidates, roll: string) => {

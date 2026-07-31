@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ElectionStatus } from "@/types";
 
-export function useWaitingRoom(electionId: string, _rollNumber?: string) {
+export function useWaitingRoom(electionId: string) {
   const router = useRouter();
   const [participants, setParticipants] = useState<string[]>([]);
   const [count, setCount] = useState(0);

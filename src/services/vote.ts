@@ -74,19 +74,4 @@ export class VoteService {
       .subscribe();
   }
 
-  /**
-   * Get total vote count cast in an election
-   */
-  public static async getVoteCount(electionId: string): Promise<number> {
-    const { count, error } = await supabase
-      .from("votes")
-      .select("*", { count: "exact", head: true })
-      .eq("election_id", electionId);
-
-    if (error) {
-      throw new Error(`Failed to get vote count: ${error.message}`);
-    }
-
-    return count || 0;
-  }
 }

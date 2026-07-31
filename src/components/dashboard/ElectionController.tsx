@@ -134,7 +134,7 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
   const handleUpdateStatus = async (newStatus: ElectionStatus, reason?: string) => {
     if (!election) return;
 
-    const toastId = toast.loading("We are going to live now!");
+    const toastId = toast.loading("Transition State...");
     try {
       await ElectionService.updateElectionStatus(electionId, newStatus, reason);
       // Refetch to get the exact server-written timestamps (end_time, start_time, etc.)
