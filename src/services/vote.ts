@@ -11,13 +11,11 @@ export class VoteService {
   ): Promise<void> {
     const formattedRoll = rollNumber.trim().toUpperCase();
 
-    const { error } = await supabase
-      .from("votes")
-      .insert({
-        election_id: electionId,
-        roll_number: formattedRoll,
-        candidate_id: candidateId,
-      });
+    const { error } = await supabase.rpc("submit_vote", {
+      p_election_id: electionId,
+      p_roll_number: formattedRoll,
+      p_candidate_id: candidateId,
+    });
 
     if (error) {
       if (error.code === "23505") {
@@ -39,18 +37,16 @@ export class VoteService {
   ): Promise<boolean> {
     const formattedRoll = rollNumber.trim().toUpperCase();
 
-    const { data, error } = await supabase
-      .from("votes")
-      .select("id")
-      .eq("election_id", electionId)
-      .eq("roll_number", formattedRoll)
-      .maybeSingle();
+    const { data, error } = await supabase.rpc("has_already_voted", {
+      p_election_id: electionId,
+      p_roll_number: formattedRoll,
+    });
 
     if (error) {
       throw new Error(`Failed to check voting status: ${error.message}`);
     }
 
-    return !!data;
+    return data === true;
   }
 
   /**

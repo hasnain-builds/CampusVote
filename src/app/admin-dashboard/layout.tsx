@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Vote,
@@ -10,8 +10,10 @@ import {
   ChevronRight,
   Menu,
   X,
+  Loader2,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { supabase } from "@/lib/supabase";
 
 interface NavItem {
   label: string;
@@ -25,9 +27,67 @@ const navItems: NavItem[] = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = React.useState(false);
-  const adminInfo = {
-    name: "Hasnain Sheikh",
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [adminInfo, setAdminInfo] = useState({
+    name: "Admin",
+  });
+
+  // Auth protection and profile fetching
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error || !session) {
+          if (isMounted) router.push("/admin/login");
+          return;
+        }
+
+        // Fetch profile
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("name")
+          .eq("id", session.user.id)
+          .single();
+
+        if (isMounted) {
+          if (profile?.name) {
+            setAdminInfo({ name: profile.name });
+          } else {
+            // Fallback to metadata if profile not generated yet
+            setAdminInfo({ name: session.user.user_metadata?.name || "Admin" });
+          }
+          setIsLoadingAuth(false);
+        }
+      } catch (err) {
+        console.error("Auth check failed:", err);
+        if (isMounted) router.push("/admin/login");
+      }
+    };
+
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        router.push("/admin/login");
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [router]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/admin/login");
   };
 
   // Helper to determine if a nav link is active
@@ -40,6 +100,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   // Get initials for profile fallback avatar
   const getInitials = (name: string) => {
+    if (!name) return "AD";
     return name
       .split(" ")
       .map((n) => n[0])
@@ -47,6 +108,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .toUpperCase()
       .slice(0, 2);
   };
+
+  if (isLoadingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center font-sans">
+        <Loader2 className="h-10 w-10 text-blue-600 animate-spin mb-4" />
+        <p className="text-slate-500 font-medium">Verifying admin access...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans relative">
@@ -118,13 +188,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <span className="text-xs font-bold text-slate-900 truncate">{adminInfo.name}</span>
             </div>
           </div>
-          <Link
-            href="/"
+          <button
+            onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 border border-slate-100 hover:border-red-100 cursor-pointer min-h-[48px]"
           >
             <LogOut className="h-3.5 w-3.5" />
             Exit Console
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -187,13 +257,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <span className="text-xs font-bold text-slate-900 truncate">{adminInfo.name}</span>
             </div>
           </div>
-          <Link
-            href="/"
+          <button
+            onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 border border-slate-100 hover:border-red-100 cursor-pointer min-h-[38px]"
           >
             <LogOut className="h-3.5 w-3.5" />
             Exit Console
-          </Link>
+          </button>
         </div>
       </aside>
 

@@ -13,6 +13,7 @@ export interface Election {
   voting_started_at: string | null;
   end_time?: string | null;
   start_time?: string | null;
+  created_by?: string;
 }
 
 export interface Candidate {

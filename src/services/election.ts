@@ -21,6 +21,12 @@ export class ElectionService {
   ): Promise<ElectionWithCandidates> {
     const code = this.generateJoinCode();
     
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to create an election.");
+    }
+
     const payload = {
       title,
       election_type: electionType,
@@ -28,6 +34,7 @@ export class ElectionService {
       join_code: code,
       status: "draft",
       duration_minutes: durationMinutes,
+      created_by: user.id,
     };
     console.log("Inserting election payload:", payload);
 
@@ -70,10 +77,19 @@ export class ElectionService {
    * Fetch all elections
    */
   public static async getAllElections(): Promise<ElectionWithCandidates[]> {
-    const { data: elections, error: electionsError } = await supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      throw new Error("You must be logged in to view your elections.");
+    }
+
+    let query = supabase
       .from("elections")
       .select("*, candidates(*)")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .eq("created_by", user.id);
+
+    const { data: elections, error: electionsError } = await query;
 
     if (electionsError) {
       throw new Error(`Failed to fetch elections: ${electionsError.message}`);
