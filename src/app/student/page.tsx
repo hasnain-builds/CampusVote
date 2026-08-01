@@ -74,11 +74,30 @@ function StudentHubContent() {
   }, [searchParams]);
 
   // Hook handles realtime updates and auto-routing to /election/[id]/vote when status transitions to LIVE
-  const { participants, count, forceSync } = useWaitingRoom(
-    election?.id || ""
+  const { participants, count, wasInWaitingRoom, isRemoved, setWasInWaitingRoom, setIsRemoved, forceSync } = useWaitingRoom(
+    election?.id || "",
+    rollNumber
   );
 
+  // Handle student removal by administrator: ONLY if student was in waiting room
+  useEffect(() => {
+    if (isRemoved && wasInWaitingRoom && step === "LOBBY") {
+      toast.error("You have been removed from this election by the administrator.");
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("campusvote.electionId");
+        localStorage.removeItem("campusvote.rollNumber");
+      }
+
+      setElection(null);
+      setRollNumber("");
+      setStep("JOIN");
+    }
+  }, [isRemoved, wasInWaitingRoom, step]);
+
   const handleJoinSuccess = (loadedElection: ElectionWithCandidates, roll: string) => {
+    setIsRemoved(false);
+    setWasInWaitingRoom(true);
     setElection(loadedElection);
     setRollNumber(roll);
 

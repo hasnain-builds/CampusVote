@@ -6,7 +6,7 @@ interface WaitingRoomStatusProps {
   statusText?: string;
 }
 
-export function WaitingRoomStatus({ statusText = "Waiting for teacher to start voting..." }: WaitingRoomStatusProps) {
+export function WaitingRoomStatus({ statusText = "Waiting for admin to start voting..." }: WaitingRoomStatusProps) {
   return (
     <div className="flex items-center justify-center gap-2 p-3 bg-slate-50 border border-slate-100 rounded-2xl max-w-xs mx-auto">
       <span className="relative flex h-2 w-2">

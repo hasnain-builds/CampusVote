@@ -7,6 +7,7 @@ import { ArrowLeft, Play, StopCircle, Award, Users, Vote, Timer, QrCode, Loader2
 import { toast } from "sonner";
 
 import { ElectionService } from "@/services/election";
+import { WaitingRoomService } from "@/services/waiting-room";
 import { ElectionStatus } from "@/types";
 import { getFriendlyElectionType } from "@/utils/election";
 import { formatTime, parseUTCDate } from "@/utils/countdown";
@@ -15,6 +16,7 @@ import { useRealtimeWaitingRoom } from "@/hooks/useRealtimeWaitingRoom";
 import { useRealtimeVotes } from "@/hooks/useRealtimeVotes";
 import { JoinQRCode } from "@/components/qr/JoinQRCode";
 import { CreateElectionDialog } from "@/components/dashboard/CreateElectionDialog";
+import { RemoveParticipantDialog } from "@/components/dashboard/RemoveParticipantDialog";
 
 interface ElectionControllerProps {
   electionId: string;
@@ -30,6 +32,35 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
   const [syncTrigger, setSyncTrigger] = useState(0);
   const [origin, setOrigin] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
+
+  // ── Remove Participant state ──
+  const [selectedRoll, setSelectedRoll] = useState<string | null>(null);
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const handleOpenRemoveDialog = (roll: string) => {
+    setSelectedRoll(roll);
+    setIsRemoveDialogOpen(true);
+  };
+
+  const handleConfirmRemove = async () => {
+    if (!selectedRoll || !electionId) return;
+
+    setIsRemoving(true);
+    try {
+      await WaitingRoomService.removeParticipant(electionId, selectedRoll);
+      toast.success("Participant removed successfully.");
+      setIsRemoveDialogOpen(false);
+      setSelectedRoll(null);
+      setSyncTrigger((prev) => prev + 1);
+    } catch (err: any) {
+      console.error("Remove participant error:", err);
+      toast.error(err.message || "Failed to remove participant.");
+      setIsRemoveDialogOpen(false);
+    } finally {
+      setIsRemoving(false);
+    }
+  };
 
   // Get window location on mount
   useEffect(() => {
@@ -308,11 +339,18 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
                   {waitingRoomVoters.map((roll, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 py-3.5 text-sm font-bold text-slate-700 tracking-wide"
+                      onClick={() => handleOpenRemoveDialog(roll)}
+                      title="Click to remove participant"
+                      className="flex items-center justify-between py-3.5 px-3 rounded-xl hover:bg-red-50/60 transition-all cursor-pointer group"
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                      <span className="font-mono text-slate-800">{roll}</span>
-                      <span className="text-slate-400 font-normal">joined the room</span>
+                      <div className="flex items-center gap-2 text-sm font-bold text-slate-700 tracking-wide">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                        <span className="font-mono text-slate-800 group-hover:text-red-700 transition-colors">{roll}</span>
+                        <span className="text-slate-400 font-normal group-hover:text-red-500/80 transition-colors">joined the room</span>
+                      </div>
+                      <span className="text-xs font-semibold text-red-600 opacity-0 group-hover:opacity-100 transition-all bg-white px-2.5 py-1 rounded-lg border border-red-100 shadow-xs">
+                        Remove Participant
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -490,6 +528,15 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
           )}
         </div>
       </div>
+
+      {/* Remove Participant Confirmation Dialog */}
+      <RemoveParticipantDialog
+        isOpen={isRemoveDialogOpen}
+        onOpenChange={setIsRemoveDialogOpen}
+        rollNumber={selectedRoll || ""}
+        onConfirm={handleConfirmRemove}
+        isRemoving={isRemoving}
+      />
     </div>
   );
 }
