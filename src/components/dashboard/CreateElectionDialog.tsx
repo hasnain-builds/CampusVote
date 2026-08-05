@@ -27,8 +27,8 @@ interface CandidateInput {
 
 export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [electionType, setElectionType] = useState<ElectionType>("CR");
+  const [targetPosition, setTargetPosition] = useState<"CR" | "BR" | "OTHER">("CR");
+  const [customPositionName, setCustomPositionName] = useState("");
   const [batch, setBatch] = useState("");
   const [durationMinutes, setDurationMinutes] = useState(5);
   const [candidates, setCandidates] = useState<CandidateInput[]>([
@@ -58,8 +58,26 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title.trim() || !electionType || !batch.trim()) {
-      toast.error("Please fill in all election configuration fields.");
+    let finalTitle = "";
+    let finalElectionType: ElectionType = "CR";
+
+    if (targetPosition === "CR") {
+      finalTitle = "Class Representative";
+      finalElectionType = "CR";
+    } else if (targetPosition === "BR") {
+      finalTitle = "Batch Representative";
+      finalElectionType = "BR";
+    } else if (targetPosition === "OTHER") {
+      if (!customPositionName.trim()) {
+        toast.error("Please enter a position name.");
+        return;
+      }
+      finalTitle = customPositionName.trim();
+      finalElectionType = "CR";
+    }
+
+    if (!batch.trim()) {
+      toast.error("Please enter the eligible batch.");
       return;
     }
 
@@ -76,8 +94,8 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
 
     try {
       const newElection = await ElectionService.createElection(
-        title.trim(),
-        electionType,
+        finalTitle,
+        finalElectionType,
         batch.trim(),
         durationMinutes,
         candidates.map((c) => ({
@@ -89,8 +107,8 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
       setOpen(false);
       
       // Reset form
-      setTitle("");
-      setElectionType("CR");
+      setTargetPosition("CR");
+      setCustomPositionName("");
       setBatch("");
       setDurationMinutes(5);
       setCandidates([
@@ -124,29 +142,14 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
           <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 text-left">
             <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-2">
-                <Label htmlFor="title" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Election Title
-                </Label>
-                <Input
-                  id="title"
-                  placeholder="e.g., CR Boys Election 2026"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                  disabled={isSubmitting}
-                  className="rounded-xl min-h-[48px] text-base"
-                />
-              </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="grid grid-cols-1 gap-2 text-left min-w-0">
                   <Label htmlFor="electionType" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     Target Position
                   </Label>
                   <Select
-                    value={electionType}
-                    onValueChange={(val) => setElectionType(val as ElectionType)}
+                    value={targetPosition}
+                    onValueChange={(val) => setTargetPosition(val as "CR" | "BR" | "OTHER")}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger id="electionType" className="bg-white rounded-xl border-slate-200 min-h-[48px] text-base w-full">
@@ -155,17 +158,18 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                     <SelectContent className="rounded-xl border-slate-100 bg-white">
                       <SelectItem value="CR" className="rounded-lg">Class Representative</SelectItem>
                       <SelectItem value="BR" className="rounded-lg">Batch Representative</SelectItem>
+                      <SelectItem value="OTHER" className="rounded-lg">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="grid grid-cols-1 gap-2 min-w-0">
-                  <Label htmlFor="batch" className="text-xs font-bold text-slate-400">
+                  <Label htmlFor="batch" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     Eligible Batch
                   </Label>
                   <Input                        
                     id="batch"
-                    placeholder="eg., Section-B"
+                    placeholder="e.g., Section-B"
                     value={batch}
                     onChange={(e) => setBatch(e.target.value)}
                     required
@@ -174,6 +178,23 @@ export function CreateElectionDialog({ onSuccess }: CreateElectionDialogProps) {
                   />
                 </div>
               </div>
+
+              {targetPosition === "OTHER" && (
+                <div className="grid grid-cols-1 gap-2 text-left">
+                  <Label htmlFor="customPositionName" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    Position Name
+                  </Label>
+                  <Input
+                    id="customPositionName"
+                    placeholder="Enter position name"
+                    value={customPositionName}
+                    onChange={(e) => setCustomPositionName(e.target.value)}
+                    required={targetPosition === "OTHER"}
+                    disabled={isSubmitting}
+                    className="rounded-xl min-h-[48px] text-base bg-white"
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-1 gap-2">
                 <Label htmlFor="duration" className="text-xs font-bold text-slate-400 uppercase tracking-wider">

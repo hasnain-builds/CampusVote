@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">Elections Overview</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Manage your classroom elections, launch waiting room lobbies, and monitor voter activity.
+            Manage your campus elections, launch waiting room lobbies, and monitor voter activity.
           </p>
         </div>
         <div className="flex shrink-0">
@@ -119,7 +119,7 @@ export default function AdminDashboardPage() {
 
       {/* Main Console Content */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-slate-800 text-left">Your Classroom Elections</h2>
+        <h2 className="text-lg font-bold text-slate-800 text-left">Your Elections</h2>
         {isLoading ? (
           <div className="py-20 flex justify-center items-center">
             <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />

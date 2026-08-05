@@ -315,7 +315,7 @@ function StudentVotingContent({ electionId }: { electionId: string }) {
           {/* Metadata Subheader */}
           <div className="bg-white border border-slate-200/60 rounded-xl p-4 flex flex-col gap-1.5 text-xs text-slate-500">
             <div>
-              Position: <strong className="text-slate-800 font-bold">{getFriendlyElectionType(election.election_type)}</strong>
+              Position: <strong className="text-slate-800 font-bold">{getFriendlyElectionType(election.election_type, election.title)}</strong>
             </div>
             <div>
               Eligible Batch: <strong className="text-slate-800 font-bold">{election.eligible_batch}</strong>

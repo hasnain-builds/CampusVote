@@ -226,7 +226,7 @@ export function ElectionController({ electionId }: ElectionControllerProps) {
           <div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">{election.title}</h1>
             <p className="text-sm text-slate-500 mt-0.5">
-              Position: <strong className="text-slate-700">{getFriendlyElectionType(election.election_type)}</strong> | Eligible Batch: <strong className="text-slate-700">{election.eligible_batch}</strong>
+              Position: <strong className="text-slate-700">{getFriendlyElectionType(election.election_type, election.title)}</strong> | Eligible Batch: <strong className="text-slate-700">{election.eligible_batch}</strong>
             </p>
           </div>
           

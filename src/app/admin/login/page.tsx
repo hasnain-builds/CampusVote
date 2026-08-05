@@ -70,7 +70,7 @@ export default function AdminLoginPage() {
           Admin Portal
         </h2>
         <p className="mt-2 text-center text-sm text-slate-500 font-medium">
-          Sign in to manage your classroom elections
+          Sign in to manage your campus elections
         </p>
       </div>
 

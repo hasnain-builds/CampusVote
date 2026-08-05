@@ -68,7 +68,7 @@ export function ElectionList({ elections, onDeleteSuccess }: ElectionListProps) 
         </div>
         <h3 className="text-lg font-bold text-slate-800">No elections scheduled</h3>
         <p className="text-sm text-slate-400 max-w-sm mx-auto mt-1.5 leading-relaxed">
-          Create your first classroom election using the button above to generate a join code and QR code.
+          Create your first election using the button above to generate a join code and QR code.
         </p>
       </div>
     );
@@ -98,7 +98,7 @@ export function ElectionList({ elections, onDeleteSuccess }: ElectionListProps) 
                   {election.title}
                 </h3>
                 <p className="text-xs font-semibold text-slate-400 mt-0.5">
-                  Position: {getFriendlyElectionType(election.election_type)}
+                  Position: {getFriendlyElectionType(election.election_type, election.title)}
                 </p>
               </div>
             </div>

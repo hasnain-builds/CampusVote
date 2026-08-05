@@ -220,7 +220,7 @@ function StudentHubContent() {
 
       <footer className="relative z-10 py-6 text-center border-t border-slate-200/50 bg-white/40">
         <p className="text-xs font-medium text-slate-400">
-          CampusVote Classroom Hub
+          CampusVote Hub
         </p>
       </footer>
     </div>

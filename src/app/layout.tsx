@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CampusVote — Secure Digital Election Platform",
-  description: "A premium, secure digital voting system for college Class Representative and Batch Representative elections.",
+  description: "A premium, secure digital voting system for Class Representative, Batch Representative, and Custom Campus Elections.",
 };
 
 export default function RootLayout({
