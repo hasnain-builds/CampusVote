@@ -193,7 +193,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 border border-slate-100 hover:border-red-100 cursor-pointer min-h-[48px]"
           >
             <LogOut className="h-3.5 w-3.5" />
-            Exit Console
+            Logout
           </button>
         </div>
       </div>
