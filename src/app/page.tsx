@@ -47,18 +47,7 @@ export default function Home() {
           Create live polls, generate instant join codes, and run Class Representative, Batch Representative, or Custom Elections in seconds. No student login required — scan the QR code, enter a roll number, and vote.
         </p>
 
-        {/* Supported Election Types */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 text-xs font-semibold text-slate-600">
-          <span className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200/80">
-            Class Representative Elections
-          </span>
-          <span className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200/80">
-            Batch Representative Elections
-          </span>
-          <span className="px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-bold">
-            Custom Elections
-          </span>
-        </div>
+    
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-14 w-full sm:w-auto">
