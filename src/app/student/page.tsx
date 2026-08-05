@@ -163,10 +163,10 @@ function StudentHubContent() {
                 Back
               </span>
             </button> */}
-            <button 
-            onClick={() => router.push("/")}
-            className="flex items-center gap-2 h-10 w-10 flex items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm hover:bg-slate-100 transition">
-                      <ArrowLeft className="h-5 w-5 text-slate-700" />
+            <button
+              onClick={() => router.push("/")}
+              className="flex items-center gap-2 h-10 w-10 flex items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm hover:bg-slate-100 transition">
+              <ArrowLeft className="h-5 w-5 text-slate-700" />
             </button>
 
             <Link href="/" className="flex items-center gap-2.5">
@@ -191,9 +191,8 @@ function StudentHubContent() {
                 <RotateCw className="h-4 w-4" />
               </button>
             )}
-            <span className="text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200/40 px-3 py-1 rounded-full">
-              Classroom Mode
-            </span>
+
+
           </div>
         </div>
       </header>
